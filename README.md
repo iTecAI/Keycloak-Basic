@@ -13,7 +13,7 @@ python -m pip install keycloak-basic
 **Usage**
 
 ```python
-from keycloak import Keycloak, AccessToken, UserInfo
+from keycloak import Keycloak, Token, UserInfo
 
 keycloak: Keycloak = Keycloak(
     "http(s)://<host>:<port>", # Keycloak server URL with no trailing path
@@ -22,16 +22,18 @@ keycloak: Keycloak = Keycloak(
     client_secret = "<client secret" # Client secret, if present
 )
 
-token: AccessToken = keycloak.login(
+token: Token = keycloak.auth(
     "<username>", # User username
     "<password>" # User password
-) -> AccessToken
+) -> Token
 
-keycloak.authenticated # Boolean, true if logged in
-keycloak.isScoped("scope") -> bool # True if current token has scope
+token.authenticated # Boolean, true if logged in
+token.isScoped("scope") -> bool # True if current token has scope
 
-info: UserInfo = keycloak.userinfo() -> UserInfo object
+info: UserInfo = token.info() -> UserInfo object
 
-keycloak.refresh() -> AccessToken # Refreshes connection
-keycloak.logout() # Logs out
+token.refresh() # Refreshes connection
+token.logout() # Logs out
+
+keycloak.load_token(token.content) -> Token # Loads token from dict
 ```

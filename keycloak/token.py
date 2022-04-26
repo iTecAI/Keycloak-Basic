@@ -9,7 +9,7 @@ class Token(Dataclass):
     def __init__(self, content: dict, keycloak) -> None:
         super().__init__(content)
         self.keycloak = keycloak
-        self.last_auth = time.time()
+        self.last_auth = time.time() if not "last_auth" in content else content["last_auth"]
         self.authenticated = True
 
     @property
